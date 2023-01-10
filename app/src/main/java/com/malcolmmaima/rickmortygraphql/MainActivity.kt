@@ -1,17 +1,19 @@
 package com.malcolmmaima.rickmortygraphql
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
@@ -30,7 +32,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val apolloClient = ApolloClient.builder()
+        val apolloClient = ApolloClient.Builder()
             .serverUrl("https://rickandmortyapi.com/graphql/")
             .okHttpClient(OkHttpClient.Builder().build())
             .build()
@@ -51,19 +53,30 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun CharactersComposable() {
         MaterialTheme {
-            Column {
-                characters.value.forEach { character ->
-                    character.name?.let {
-                        Text(text = it, modifier = Modifier.padding(16.dp))
-                    }
-                    character.imageUrl?.let {
-                        Image(
-                            painter = rememberImagePainter(it),
-                            contentDescription = character.name,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
+            ScrollableColumn()
+        }
+    }
+
+    @Composable
+    private fun ScrollableColumn(){
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(characters.value.size) { index ->
+                val character = characters.value[index]
+                character.imageUrl?.let {
+                    Image(
+                        painter = rememberImagePainter(it),
+                        contentDescription = character.name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                    )
                 }
+                character.let {
+                    character.name?.let { name -> Text(text = name, modifier = Modifier.padding(16.dp)) }
+                    Image(painter = rememberImagePainter(character.imageUrl), contentDescription = character.name, modifier = Modifier
+                        .fillMaxWidth().height(200.dp).padding(4.dp))
+                }
+
             }
         }
     }
