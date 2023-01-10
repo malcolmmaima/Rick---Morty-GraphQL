@@ -16,6 +16,7 @@ import coil.compose.rememberImagePainter
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.network.okHttpClient
+import com.malcolmmaima.rickmortygraphql.models.CharacterModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -80,5 +81,3 @@ class MainActivity : ComponentActivity() {
     }
 
 }
-
-data class CharacterModel(val imageUrl: String?, val name: String?)

@@ -1,4 +1,3 @@
 package com.malcolmmaima.rickmortygraphql.models
 
-class CharacterModel {
-}
+data class CharacterModel(val imageUrl: String?, val name: String?)
