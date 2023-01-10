@@ -3,6 +3,7 @@ package com.malcolmmaima.rickmortygraphql
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.network.okHttpClient
@@ -50,7 +52,16 @@ class MainActivity : ComponentActivity() {
         MaterialTheme {
             Column {
                 characters.value.forEach { character ->
-                    character.name?.let { Text(text = it, modifier = Modifier.padding(16.dp)) }
+                    character.name?.let {
+                        Text(text = it, modifier = Modifier.padding(16.dp))
+                    }
+                    character.imageUrl?.let {
+                        Image(
+                            painter = rememberImagePainter(it),
+                            contentDescription = character.name,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
                 }
             }
         }
@@ -70,4 +81,4 @@ class MainActivity : ComponentActivity() {
 
 }
 
-data class CharacterModel(val id: String?, val name: String?)
+data class CharacterModel(val imageUrl: String?, val name: String?)
