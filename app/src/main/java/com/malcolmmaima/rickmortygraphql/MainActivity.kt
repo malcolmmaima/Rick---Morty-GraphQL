@@ -62,24 +62,15 @@ class MainActivity : ComponentActivity() {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(characters.value.size) { index ->
                 val character = characters.value[index]
-                character.imageUrl?.let {
-                    Image(
-                        painter = rememberImagePainter(it),
-                        contentDescription = character.name,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp)
-                    )
-                }
-                character.let {
-                    character.name?.let { name -> Text(text = name, modifier = Modifier.padding(16.dp)) }
+                Row(modifier = Modifier.fillMaxWidth()) {
                     Image(painter = rememberImagePainter(character.imageUrl), contentDescription = character.name, modifier = Modifier
-                        .fillMaxWidth().height(200.dp).padding(4.dp))
+                        .width(50.dp).height(50.dp).padding(4.dp))
+                    character.name?.let { name -> Text(text = name, modifier = Modifier.padding(16.dp)) }
                 }
-
             }
         }
     }
+
 
 
     private fun handleResponse(response: ApolloResponse<AllCharactersQuery.Data>) {
